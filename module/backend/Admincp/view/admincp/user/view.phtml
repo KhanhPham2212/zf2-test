@@ -1,0 +1,76 @@
+<section class="wrapper site-min-height">
+    <div class="row">
+        <aside class="profile-nav col-lg-3">
+            <section class="panel">
+                <div class="user-heading round">
+                    <a href="#">
+                        <?php if ($this->arrUser['gender'] == 1) : ?>
+                            <img src = "<?php echo STATIC_URL . '/b/images/no_avatar_male.jpg' ?>">
+                        <?php else : ?>
+                            <img src = "<?php echo STATIC_URL . '/b/images/no_avatar_female.jpg' ?>">
+                        <?php endif; ?>
+                    </a>
+                    <h1><?php echo $this->arrUser['fullname']
+                        ?></h1>
+                    <p><?php echo $this->arrUser['email'] ?></p>
+                </div>
+
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="<?php echo $this->params['action'] === 'view' ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->serverUrl() . $this->Url('backend', array('controller' => 'user', 'action' => 'view', 'id' => $this->arrUser['user_id'])); ?>"> <i class="fa fa-user"></i>Thông tin tài khoản</a>
+                    </li>
+                    <li class="<?php echo $this->params['action'] === 'recent' ? 'active' : ''; ?>">
+                        <a href="#"> <i class="fa fa-calendar"></i> Hoạt động gần đây <span class="label label-danger pull-right r-activity">9</span></a>
+                    </li>
+                    <li class="<?php echo $this->params['action'] === 'edit' ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->serverUrl() . $this->Url('backend', array('controller' => 'user', 'action' => 'edit', 'id' => $this->arrUser['user_id'])); ?>"> <i class="fa fa-edit"></i>Chỉnh sửa  thông tin tài khoản</a>
+                    </li>
+                </ul>
+
+            </section>
+        </aside>
+        <aside class="profile-info col-lg-9">
+            <section class="panel">
+                <div class="panel-body bio-graph-info">
+                    <h1>Thông tin người dùng</h1>
+                    <div class="row">
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Họ và tên </span>: <?php echo $this->arrUser['fullname'] ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Địa chỉ </span>: <?php echo $this->arrUser['full_address'] ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Giới tính </span>: <?php echo $this->arrUser['gender'] == 1 ? 'Nam' : 'Nữ' ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Ngày sinh </span>: <?php echo date("d/m/Y", $this->arrUser['birthdate']) ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Email </span>: <?php echo $this->arrUser['email'] ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Số điện thoại </span>:  <?php echo $this->arrUser['phone'] ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span style="text-decoration:underline;">Ngày đăng kí </span>:  <?php echo date('d-m-Y', ($this->arrUser['created_date'])); ?></p>
+                        </div>
+                        <div class="bio-row">
+                            <p>
+                                <span style="text-decoration:underline;">Trạng thái </span>: 
+                                <?php if ($this->arrUser['is_actived'] == 1) : ?>
+                                    <span class="label label-primary" style="width:80px;">Đã kích hoạt</span>
+                                <?php else : ?>
+                                    <span class = "label label-danger" style = "width:90px;">Chưa kích hoạt</span>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                        <div class="bio-row">
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </div>
+</section>

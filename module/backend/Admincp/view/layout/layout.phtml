@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php
+        echo $this->headTitle()->setAutoEscape(false);
+        echo $this->headMeta();
+        echo $this->headLink();
+        echo $this->headScript();
+        ?>
+        <script type="text/javascript">
+            var baseUrl = '<?php echo $this->serverUrl(); ?>';
+            var staticUrl = '<?php echo STATIC_URL; ?>';
+            var fullname = '<?php echo FULLNAME; ?>';
+            var role = '<?php echo USER_ROLE_LIST; ?>';
+            var email = '<?php echo EMAIL; ?>';
+        </script>
+
+    </head>
+    <body>
+    
+        <section id="container" class="sidebar-closed">
+            <?php
+            echo $this->render('admincp/header');
+            echo $this->render('admincp/sidebar');
+            ?>
+            <section id="main-content"><?php echo $this->layout()->content; ?></section>
+            <footer class="site-footer">
+                <div class="text-center">
+                    2016 &copy; Fado.VN
+                    <a href="#" class="go-top">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+            </footer>
+        </section>
+    </body>
+</html>

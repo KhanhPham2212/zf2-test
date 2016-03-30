@@ -1,0 +1,81 @@
+server {
+       listen   80;
+       server_name dev.microlink.vn;
+       access_log off;
+       error_log /var/www/microlink_core/logs/error.log;
+       root /var/www/microlink_core/html/public;
+
+       location / {
+           if (!-f $request_filename) {
+            rewrite ^(.*)$ /index.php?q=$1 last;
+            break;
+           }
+       }
+
+
+       location ~ /\.{deny  all;}
+
+       error_page 403 @maintain;
+       location @maintain{
+           allow all;
+           root /var/www/microlink_core/html/public/;
+           rewrite ^(.*)$ /maintain.html break;
+       }
+
+
+       location ~ \.php$ {
+           if ($request_uri = /backend/discount/add-code-progress){
+             gzip off;
+           }
+           if ($request_uri = /backend/discount/send-code-progress){
+             gzip off;
+           }
+
+           include /etc/nginx/fastcgi_params;
+           fastcgi_pass 127.0.0.1:9000;
+     fastcgi_read_timeout 300;
+           fastcgi_param APPLICATION_ENV dev;
+           fastcgi_index index.php;
+           fastcgi_param SCRIPT_FILENAME /var/www/microlink_core/html/public$fastcgi_script_name;
+       }
+}
+
+
+
+server {
+       listen   80;
+       server_name dev.st.microlink.vn www.dev.st.microlink.vn;
+       error_log /var/www/microlink_core/logs/static_error.log;
+       root /var/www/microlink_core/html/static;
+       add_header Pragma public;
+       add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+       expires           max;
+       access_log off;
+       log_not_found     off;
+
+       location ~ /\.{deny  all;}
+
+       location ~* \.(eot|ttf|woff|woff2|otf|svg)$ {
+         add_header "Access-Control-Allow-Origin" "*";
+       }
+
+       # Deny access to sensitive files.
+       location ~ (\.inc\.php|\.tpl|\.sql|\.tpl\.php|\.db)$ {
+         deny all;
+       }
+
+      concat_types text/css application/javascript;
+
+       location ~* /js {
+         concat on;
+         concat_max_files 30;
+       }
+       location ~* /css {
+         concat on;
+         concat_max_files 30;
+       }
+
+       location ~ /\.ht {
+         deny all;
+       }
+}
