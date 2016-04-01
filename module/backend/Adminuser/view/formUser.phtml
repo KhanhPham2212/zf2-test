@@ -39,6 +39,10 @@ switch ($type) {
                         $this->formLabel($ele,"<span style='color:red'>*</span>","prepend"),
                         $this->formSelect($ele));
 		break;
+                
+                case 'hidden':
+                            $xhtml = sprintf('<div class="form-group"> %s </div>',$this->formElement($ele));
+                            break;
 	
 	default:
 		$xhtml = sprintf('<div class="form-group"> %s  

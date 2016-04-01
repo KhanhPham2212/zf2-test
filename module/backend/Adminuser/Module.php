@@ -30,70 +30,25 @@ class Module {
 
     public function getServiceConfig(){
         return array(
-            "factories" => array(
-                "UserTableGateway" => function($sm){
-                    $adapter = $sm->get("Zend\Db\Adapter\Adapter");
-
-                    $resultSetPrototype = new HydratingResultSet();
-                    $resultSetPrototype->setHydrator(new ObjectProperty());
-                    $resultSetPrototype->setObjectPrototype(new \Adminuser\Model\Entity\User());
-                    
-                    return $tableGateway = new TableGateway("users",$adapter,null,$resultSetPrototype);
-                },
+            "factories" => array(          
                 "Database\Model\User" => function($sm){
-                    $tableGateway = $sm->get("UserTableGateway");
-                    return  new \Adminuser\Model\UserTable($tableGateway);
-                },
-                "GroupTableGateway" => function($sm){
-                    $adapter = $sm->get("Zend\Db\Adapter\Adapter");
-
-                    $resultSetPrototype  = new HydratingResultSet();
-                    $resultSetPrototype->setHydrator(new ObjectProperty());
-                    $resultSetPrototype->setObjectPrototype(new \Adminuser\Model\Entity\Group());
-                    
-                    return $tableGateway = new TableGateway("groups",$adapter,null,$resultSetPrototype);
-                },
+                        $tableGateway = $this->getTableGateway($sm, 'users',new \Adminuser\Model\Entity\User());
+                        return  new \Adminuser\Model\UserTable($tableGateway);
+                },    
                 "Database\Model\Group" => function($sm){
-                    $tableGateway = $sm->get("GroupTableGateway");
+                    $tableGateway = $this->getTableGateway($sm, 'groups',new \Adminuser\Model\Entity\Group());
                     return  new \Adminuser\Model\GroupTable($tableGateway);
-                },
-                "CityTableGateway" => function($sm){
-                    $adapter = $sm->get("Zend\Db\Adapter\Adapter");
-
-                    $resultSetPrototype  = new HydratingResultSet();
-                    $resultSetPrototype->setHydrator(new ObjectProperty());
-                    $resultSetPrototype->setObjectPrototype(new \Adminuser\Model\Entity\City());
-                    
-                    return $tableGateway = new TableGateway("cities",$adapter,null,$resultSetPrototype);
-                },
+                },     
                 "Database\Model\City" => function($sm){
-                    $tableGateway = $sm->get("CityTableGateway");
+                    $tableGateway = $this->getTableGateway($sm, 'cities',new \Adminuser\Model\Entity\City());
                     return  new \Adminuser\Model\CityTable($tableGateway);
                 },
-                "DistrictTableGateway" => function($sm){
-                    $adapter = $sm->get("Zend\Db\Adapter\Adapter");
-
-                    $resultSetPrototype  = new HydratingResultSet();
-                    $resultSetPrototype->setHydrator(new ObjectProperty());
-                    $resultSetPrototype->setObjectPrototype(new \Adminuser\Model\Entity\District());
-                    
-                    return $tableGateway = new TableGateway("districts",$adapter,null,$resultSetPrototype);
-                },
                 "Database\Model\District" => function($sm){
-                    $tableGateway = $sm->get("DistrictTableGateway");
+                    $tableGateway = $this->getTableGateway($sm, 'districts',new \Adminuser\Model\Entity\District());
                     return  new \Adminuser\Model\DistrictTable($tableGateway);
                 },
-                "WardTableGateway" => function($sm){
-                    $adapter = $sm->get("Zend\Db\Adapter\Adapter");
-
-                    $resultSetPrototype  = new HydratingResultSet();
-                    $resultSetPrototype->setHydrator(new ObjectProperty());
-                    $resultSetPrototype->setObjectPrototype(new \Adminuser\Model\Entity\Ward());
-                    
-                    return $tableGateway = new TableGateway("wards",$adapter,null,$resultSetPrototype);
-                },
                 "Database\Model\Ward" => function($sm){
-                    $tableGateway = $sm->get("WardTableGateway");
+                    $tableGateway = $this->getTableGateway($sm, 'wards',new \Adminuser\Model\Entity\Ward());
                     return  new \Adminuser\Model\WardTable($tableGateway);
                 }
             ),
@@ -111,8 +66,11 @@ class Module {
         return array(
             "factories" => array(           
                 "FormUser" => function($sm){
-                    $form      = new \Adminuser\Form\FormUser();
+                    $tableGroup = $sm->getServiceLocator()->get('GroupTable');
+            
+                    $form      = new \Adminuser\Form\FormUser($tableGroup);
                     $form->setInputFilter(new \Adminuser\Form\FormUserFilter());
+                    $form->setUseInputFilterDefaults(false);
                     return $form;
                 },
 
@@ -130,7 +88,16 @@ class Module {
             )
         );
     }
-      
     
+    private function getTableGateway($sm,$table = null,$entity = null){
+                $adapter = $sm->get("Zend\Db\Adapter\Adapter");
+
+                $resultSetPrototype = new HydratingResultSet();
+                $resultSetPrototype->setHydrator(new ObjectProperty());
+                $resultSetPrototype->setObjectPrototype($entity);
+
+                return $tableGateway = new TableGateway($table,$adapter,null,$resultSetPrototype);
+    }
+        
 }
 ?>

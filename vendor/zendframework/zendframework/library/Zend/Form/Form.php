@@ -263,12 +263,11 @@ class Form extends Fieldset implements FormInterface
                 (is_object($data) ? get_class($data) : gettype($data))
             ));
         }
-
+      
         $this->hasValidated = false;
         $this->data         = $data;
         $this->populateValues($data);
-        
-     
+
         return $this;
     }
 
@@ -300,7 +299,7 @@ class Form extends Fieldset implements FormInterface
 
         $this->bindAs = $flags;
         $this->setObject($object);
-
+      
         $data = $this->extract();
 
         $this->populateValues($data, true);
@@ -500,11 +499,13 @@ class Form extends Fieldset implements FormInterface
                 __METHOD__
             ));
         }
-
+        
         $filter->setData($this->data);
         $filter->setValidationGroup(InputFilterInterface::VALIDATE_ALL);
 
+
         $validationGroup = $this->getValidationGroup();
+        
         if ($validationGroup !== null) {
             $this->prepareValidationGroup($this, $this->data, $validationGroup);
             $filter->setValidationGroup($validationGroup);
@@ -552,7 +553,7 @@ class Form extends Fieldset implements FormInterface
         if ($flag === FormInterface::VALUES_RAW) {
             return $filter->getRawValues();
         }
-
+       
         return $filter->getValues();
     }
 
@@ -927,6 +928,7 @@ class Form extends Fieldset implements FormInterface
         } else {
             parent::populateValues($data);
         }
+ 
     }
 
     /**

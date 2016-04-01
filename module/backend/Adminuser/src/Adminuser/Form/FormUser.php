@@ -1,30 +1,30 @@
 <?php
 namespace Adminuser\Form;
 
-
+use Adminuser\Form\FormUserFilter;
 use Zend\Form\Form;
 
 class FormUser extends Form{
-	public function __construct(){
+	public function __construct($tableGroup){
 		parent::__construct();
-
+                                    
 		$this->setAttributes(
 			array(
 				"action"  => "#",
 				"method"  => "POST",
-				"class"   => "form-horizontal tasi-form",
-				"role"    => "form",
-				"name"    => "frm",
-				"id"      => "frm",
+				"class"   => "form-horizontal",
+				"role"    => "myForm",
+				"name"    => "myForm",
+				"id"      => "myForm",
 			));
 	
 		//name
 		$this->add(array(
 			"type" => "text",
-			"name" => "myFullName",
+			"name" => "fullname",
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "name",
+				"id"                => "myFullName",
 				"placeholder" => "Vui lòng nhập Họ và Tên ",
 			),
 			"options" => array(
@@ -40,10 +40,10 @@ class FormUser extends Form{
                 //email
 		$this->add(array(
 			"type" => "text",
-			"name" => "myEmail",
+			"name" => "email",
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "email",
+				"id"          => "myEmail",
 				"placeholder" => "Vui lòng nhập Email",
 			),
 			"options" => array(
@@ -58,33 +58,34 @@ class FormUser extends Form{
                 // Giới tính
 		$this->add(array(
 			"type" => "select",
-			"name" => "myGender",
+			"name" => "gender",
 			"required" => true,
 			"attributes" => array(
-                            "id"    => "gender",
-                            "class" => "form-control round-input",  
-			),
-			"options" => array(
-                            "value_options" => array(
-                                    "0"  => "Vui lòng chọn giới tính",
-                                    "1"  => "Nam",
-                                    "2"  => "Nử"
-                            ),
-                            "label" => "Giới tính ",
-                            "label_attributes" => array(
-                                    "class" => "col-lg-2 col-sm-2 control-label",
-                                    "for"   => "myGender"
-                            )
+                                                            "id"    => "myGender",
+                                                            "class" => "form-control round-input",  
+                                                        ),
+                                                "options" => array(  
+                                                            "value_options" => array(
+                                                                    "0"  => "Vui lòng chọn giới tính",
+                                                                    "1"  => "Nam",
+                                                                    "2"  => "Nử"
+                                                            ),
+                                                            "label" => "Giới tính ",
+                                                            "label_attributes" => array(
+                                                                    "class" => "col-lg-2 col-sm-2 control-label",
+                                                                    "for"   => "myGender"
+                                                            )
 			)	
 		));
 
 		//ngay sinh
 		$this->add(array(
 			"type" => "text",
-			"name" => "myBirthDate",	
+			"name" => "birthdate",
+                                                "required" => false,
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "birthdate",
+				"id"          => "myBirthDate",
 				"placeholder" => "Vui lòng nhập Ngày sinh",
 			),
 			"options" => array(
@@ -99,10 +100,10 @@ class FormUser extends Form{
 		//so dien thoai
 		$this->add(array(
 			"type" => "text",
-			"name" => "myPhoneNumber",	
+			"name" => "phone",	
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "phoneNumber",
+				"id"          => "myPhoneNumber",
 				"placeholder" => "Vui lòng nhập số điện thoại",
 			),
 			"options" => array(
@@ -114,35 +115,36 @@ class FormUser extends Form{
 			)	
 		));
 
-                //password
-                $this->add(array(
-			"type" => "password",
-			"name" => "myPassword",
-			"attributes" => array(
-				"class"       => "form-control round-input",
-				"id"          => "password",
-				"placeholder" => "Vui lòng nhập mật khẩu",
-			),
-			"options" => array(
-				"label"            => "Mật khẩu ",
-				"label_attributes" => array(
-					"class" => "col-lg-2 col-sm-2 control-label",
-					"for"   => "myPassword"
-				),
-			)	
-		));
+                                //password
+                                $this->add(array(
+                                        "type" => "password",
+                                        "name" => "password",
+                                        "attributes" => array(
+                                                "class"       => "form-control round-input",
+                                                "id"          => "myPassword",
+                                                "placeholder" => "Vui lòng nhập mật khẩu",
+                                        ),
+                                        "options" => array(
+                                                "label"            => "Mật khẩu ",
+                                                "label_attributes" => array(
+                                                        "class" => "col-lg-2 col-sm-2 control-label",
+                                                        "for"   => "myPassword"
+                                                ),
+                                        )	
+                                ));
 
 		//re-password
-        $this->add(array(
+                $this->add(array(
 			"type" => "password",
-			"name" => "myRePassword",
+			"name" => "repassword",
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "rePassword",
+				"id"          => "myRePassword",
 				"placeholder" => "Vui lòng nhập lại mật khẩu",
 			),
 			"options" => array(
-				"label"            => "Nhập lại mật khẩu ",
+                                                                "token"          => "myPassword",
+				"label"           => "Nhập lại mật khẩu ",
 				"label_attributes" => array(
 					"class" => "col-lg-2 col-sm-2 control-label",
 					"for"   => "myRePassword"
@@ -153,10 +155,10 @@ class FormUser extends Form{
 		//address
                 $this->add(array(
 			"type" => "text",
-			"name" => "myAddress",
+			"name" => "address",
 			"attributes" => array(
 				"class"       => "form-control round-input",
-				"id"          => "address",
+				"id"          => "myAddress",
 				"placeholder" => "Lưu ý: Chỉ nhập số nhà và tên đường",
 			),
 			"options" => array(
@@ -171,12 +173,15 @@ class FormUser extends Form{
 	    //tỉnh
 		$this->add(array(
 			"type" => "select",
-			"name" => "city",
+			"name" => "city_id",
 			"attributes" => array(
 				"id"    => "city",
 				"class" => "form-control round-input"
 			),
 			"options" => array(
+                                                                "value_options" => array(
+                                                                        "0"  => "Vui lòng chọn Tỉnh /  Thành",
+                                                                ),
 				"label" => "Tỉnh / Thành ",
 				"label_attributes" => array(
 					"class" => "col-lg-2 control-label",
@@ -188,12 +193,15 @@ class FormUser extends Form{
         //quận
 		$this->add(array(
 			"type" => "select",
-			"name" => "district",
+			"name" => "district_id",
 			"attributes" => array(
 				"id"    => "district",
 				"class" => "form-control round-input"
 			),
 			"options" => array(
+                                                                "value_options" => array(
+                                                                        "0"  => "Vui lòng chọn Quận /  Huyện",
+                                                                ),
 				"label" => "Quận / Huyện ",
 				"label_attributes" => array(
 					"class" => "col-lg-2 control-label",
@@ -205,12 +213,15 @@ class FormUser extends Form{
                 //xã
 		$this->add(array(
 			"type" => "select",
-			"name" => "ward",
+			"name" => "ward_id",
 			"attributes" => array(
 				"id"    => "ward",
 				"class" => "form-control round-input"
 			),
 			"options" => array(
+                                                                "value_options" => array(
+                                                                        "0"  => "Vui lòng chọn Phường /  Xã",
+                                                                ),
 				"label" => "Phường / Xã ",
 				"label_attributes" => array(
 					"class" => "col-lg-2 control-label",
@@ -229,10 +240,7 @@ class FormUser extends Form{
 				"multiple" => "multiple",
 			),
 			"options" => array(
-				"value_options" => array(
-					"1" => "Nam",
-					"2" => "Nử"
-				),
+				"value_options" => $tableGroup->itemInSelectBox(),
 				"label" => "Group",
 				"label_attributes" => array(
 					"class" => "col-lg-2 control-label",
@@ -251,6 +259,12 @@ class FormUser extends Form{
 				"value"       => "Hoàn tất"
 			),	
 		));
+                
+                                //user_id
+                                $this->add(array(
+			"name" => "user_id",
+			"type" => "hidden"
+		));
 
 	}
 
@@ -268,37 +282,37 @@ class FormUser extends Form{
         
         private function convertToPrettyName($fieldName) {
              switch($fieldName){
-                case "myFullName" :
+                case "fullname" :
                     return "Họ và tên";
                     break;
-                case "myEmail":
+                case "email":
                     return "Email";
                     break;
-                case "myGender":
+                case "gender":
                     return "Giới tính";
                     break;
-                case "myBirthDate":
+                case "birthdate":
                     return "Ngày sinh";
                     break;
-                case "myPhoneNumber":
+                case "phone":
                     return "Số điện thoại";
                     break;
-                case "myPassword":
+                case "password":
                     return "Mật khẩu";
                     break;
-                case "myRePassword":
+                case "repassword":
                     return "Mật khẩu nhập lại";
                     break;
-                case "myAddress":
+                case "address":
                     return "Địa chỉ";
                     break;
-                case "city":
+                case "city_id":
                     return "Tỉnh / Thành";
                     break;
-                case "district":
+                case "district_id":
                     return "Quận / Huyện";
                     break;
-                case "ward":
+                case "ward_id":
                     return "Phường / Xã";
                     break;
                 case "role_list":

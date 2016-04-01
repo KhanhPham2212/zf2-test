@@ -15,9 +15,18 @@ class WardTable extends AbstractTableGateway{
 
 	public function listItem(){
 		$result =   $this->_tableGateway->select(function(Select $select){
-							$select->columns(array("ward_name","ward_id"))
+							$select->columns(array("ward_name","ward_id","district_id"))
 								   ->order(array("ordering ASC"));
 					})->toArray();
+
+		return $result;
+	}
+        
+                public function listItemById($id){
+		$result =   $this->_tableGateway->select(function(Select $select) use($id){
+							$select->columns(array("ward_name","ward_id","district_id"))
+                                                                                                                            ->where(array("ward_id" => $id ));
+					})->current();
 
 		return $result;
 	}

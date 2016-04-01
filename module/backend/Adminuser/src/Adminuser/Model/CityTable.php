@@ -37,6 +37,16 @@ class CityTable extends AbstractTableGateway{
 
 		return $result;
 	}
+        
+                
+                public function listItemById($id){
+		$result =   $this->_tableGateway->select(function(Select $select) use($id){
+							$select->columns(array("city_name","city_id"))
+                                                                                                                            ->where(array("city_id" => $id ));
+					})->current();
+
+		return $result;
+	}
 
 }
 ?>

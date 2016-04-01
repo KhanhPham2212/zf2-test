@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/webdata/abc/module/backend/Adminuser/src/Adminuser/Controller/CityController.php</file>
+            <file>file:/home/webdata/abc/module/backend/Adminuser/src/Adminuser/Controller/UserController.php</file>
+            <file>file:/home/webdata/abc/module/backend/Adminuser/src/Adminuser/Form/FormUser.php</file>
+            <file>file:/home/webdata/abc/module/backend/Adminuser/src/Adminuser/Form/FormUserFilter.php</file>
         </group>
     </open-files>
 </project-private>

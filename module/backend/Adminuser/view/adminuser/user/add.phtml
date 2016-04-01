@@ -6,7 +6,7 @@
 	<div class="row"> 
 		<div class="col-lg-12">
                     <section class="panel panel-primary">
-                                <header class="panel-heading">Thêm người dùng mới</header>
+                                <header class="panel-heading">Thêm người dùng mới </header>
                                 <div class="panel-body">
                                 <?php 
                                     echo $form->showError();
@@ -14,18 +14,19 @@
                                 <?php 
                                 echo $this->form()->openTag($form);
                                         echo $this->partialLoop("formUser.phtml",array(
-                                                ['ele' => $form->get('myFullName') , 'type' => 'require'],
-                                                ['ele' => $form->get('myEmail')    , 'type' => 'require'],
-                                                ['ele' => $form->get('myGender')     , 'type' => 'select'],
-                                                ['ele' => $form->get('myBirthDate')] ,
-                                                ['ele' => $form->get('myPhoneNumber'), 'type' => 'require'],
-                                                ['ele' => $form->get('myPassword')   , 'type' => 'require'],
-                                                ['ele' => $form->get('myRePassword') , 'type' => 'require'],
-                                                ['ele' => $form->get('myAddress')    , 'type' => 'require'],
-                                                ['ele' => $form->get('city')       , 'type' => 'select'],
-                                                ['ele' => $form->get('district')   , 'type' => 'select'],
-                                                ['ele' => $form->get('ward')       , 'type' => 'select'],
+                                                ['ele' => $form->get('fullname') , 'type' => 'require'],
+                                                ['ele' => $form->get('email')    , 'type' => 'require'],
+                                                ['ele' => $form->get('gender')     , 'type' => 'select'],
+                                                ['ele' => $form->get('birthdate')] ,
+                                                ['ele' => $form->get('phone'), 'type' => 'require'],
+                                                ['ele' => $form->get('password')   , 'type' => 'require'],
+                                                ['ele' => $form->get('repassword') , 'type' => 'require'],
+                                                ['ele' => $form->get('address')    , 'type' => 'require'],
+                                                ['ele' => $form->get('city_id')       , 'type' => 'select'],
+                                                ['ele' => $form->get('district_id')   , 'type' => 'select'],
+                                                ['ele' => $form->get('ward_id')       , 'type' => 'select'],
                                                 ['ele' => $form->get('role_list')  , 'type' => 'group'],
+                                                ['ele' => $form->get('user_id')  , 'type' => 'hidden'],
                                                 ['ele' => $form->get('ok')         , 'type' => 'submit'],
                                         ));
                                 echo $this->form()->closeTag();
@@ -39,52 +40,99 @@
 <script type="text/javascript">
 	var ObjCity,ObjDistrict,ObjWard;
 	$(document).ready(function(){
+ 
 		$.ajax({
-			url     : "<?php echo $urlCity ?>",
-        	type    : "POST",
-        	dataType : "json",
-        	success : function(data){
-        		// console.log(data);
-				ObjCity     = data.listCity;
-				ObjDistrict = data.listDistrict;
-				ObjWard     = data.listWard;
-     			$("#city").append('<option value="null">Vui lòng chọn thành phố</option>');
-        		$(ObjCity).each(function(index,val){
-        			var cityName = val.city_name;
-        			var cityID   = val.city_id;      
-        			$("#city").append('<option value="'+cityID+'">' + cityName + '</option>');
-        		})
-        	} 
-        });
+                                url     : "<?php echo $urlCity ?>",
+                                type    : "POST",
+                                dataType : "json",
+                                success : function(data){
+                                       
+                                                ObjCity     = data.listCity;
+                                                ObjDistrict = data.listDistrict;
+                                                ObjWard     = data.listWard;
+                                       <?php if($action == 'edit'): ?>
+                                                var selectCityID = <?php  echo $user->city_id ?>;
+                                                var selectDistrictID = <?php  echo $user->district_id ?>;
+                                                var selectWardID = <?php  echo $user->ward_id ?>;
+                                                $(ObjCity).each(function(index,val){
+                                                        var cityName = val.city_name;
+                                                        var cityID   = val.city_id;     
+                                                        if( selectCityID == cityID){                                   
+                                                                $("#city").append('<option selected="selected" value="'+cityID+'">' + cityName + '</option>');
+                                                        }else{
+                                                                $("#city").append('<option value="'+cityID+'">' + cityName + '</option>');
+                                                        }
+                                                        
+                                                });
+                                                
+                                                $(ObjDistrict).each(function(index,val){
+                                                        var districtName = val.district_name;
+                                                        var districtID   = val.district_id;
+    
+                                                        if( selectDistrictID == districtID){
+                                                
+                                                                $("#district").append('<option selected="selected" value="'+districtID+'">' + districtName + '</option>');
+                                                        }else{
+                                                                $("#district").append('<option value="'+districtID+'">' + districtName + '</option>');
+                                                        }
+                                                        
+                                                });
+                                                
+                                                
+                                                $(ObjWard).each(function(index,val){
+                                                        var wardName = val.ward_name;
+                                                        var wardID   = val.ward_id;
+                                                        
+                                                        if( selectWardID == wardID){
+                                                                
+                                                                $("#ward").append('<option selected="selected" value="'+wardID+'">' + wardName + '</option>');
+                                                        }else{
+                                                                $("#ward").append('<option value="'+wardID+'">' + wardName + '</option>');
+                                                        }
+                                                        
+                                                });
+                                        <?php else: ?>
+                                            
+                                                $(ObjCity).each(function(index,val){
+                                                        var cityName = val.city_name;
+                                                        var cityID   = val.city_id;  
+                                                        $("#city").append('<option value="'+cityID+'">' + cityName + '</option>');
+                                                });
+                                        <?php endif; ?>
+                                } 
+                        });
 
-        $("#city").change(function(){
-        	$("#district").empty();
-        	$("#district").append('<option value="default">Vui lòng chọn Quận / Huyện</option>');
-        	var idCity = $(this).find(":selected").val();
-        	$(ObjDistrict).each(function(index,val){
-        		if(val.city_id === idCity){
-        			var districtName = val.district_name;
-        			var districtID   = val.district_id;
-        			$("#district").append('<option value="'+districtID+'">' + districtName + '</option>');
-        		}
-        			
-        	})
-        })
+                    $("#city").change(function(){
+                            $("#district").empty();
+                            $("#district").append('<option value="default">Vui lòng chọn Quận / Huyện</option>');
+                            var idCity = $(this).find(":selected").val();
+                  
+                            $(ObjDistrict).each(function(index,val){
+                           
+                                    if(val.city_id === idCity){
+                                            var districtName = val.district_name;
+                                            var districtID   = val.district_id;
+                            
+                                            $("#district").append('<option value="'+districtID+'">' + districtName + '</option>');
+                                    }
 
-        $("#district").change(function(){
-        	$("#ward").empty();
-        	$("#ward").append('<option value="default">Vui lòng chọn Phường / Xã</option>');
-        	var idDistrict = $(this).find(":selected").val();
+                            })
+                    })
 
-        	$(ObjWard).each(function(index,val){
-        		if(val.district_id === idDistrict){
-        			var wardName = val.ward_name;
-        			var wardID   = val.ward_id;
-        			$("#ward").append('<option value="'+wardID+'">' + wardName + '</option>');
-        		}
-        			
-        	})
-        })
+                    $("#district").change(function(){
+                            $("#ward").empty();
+                            $("#ward").append('<option value="default">Vui lòng chọn Phường / Xã</option>');
+                            var idDistrict = $(this).find(":selected").val();
+
+                            $(ObjWard).each(function(index,val){
+                                    if(val.district_id === idDistrict){
+                                            var wardName = val.ward_name;
+                                            var wardID   = val.ward_id;
+                                            $("#ward").append('<option value="'+wardID+'">' + wardName + '</option>');
+                                    }
+
+                            })
+                    })
 	})
 </script>
 <script type="text/javascript">

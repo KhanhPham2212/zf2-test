@@ -1,5 +1,6 @@
 <section class="wrapper site-min-height">
     <div class="row">
+        <?php echo $this->flashMessenger()->render() ?>
         <div class="col-lg-12">
             <section class="panel panel-primary">
                 
@@ -34,8 +35,8 @@
                                                 <?php echo $item['group_name'] ?>
                                             </td>
                                             <td style="text-align:center;">
-                                                <a href="<?php echo $this->serverUrl() . $this->Url('admincp', array('controller' => 'user', 'action' => 'edit', 'id' => $arrUser['user_id'])); ?>" class="fa fa-pencil action tooltips edit" data-placement="top" data-original-title="Sửa thông tin"></a>
-                                                <a class="fa fa-times-circle tooltips action remove" data-placement="top" data-original-title="Xóa người dùng" rel="<?php echo $arrUser['user_id'] ?>"></a>     
+                                                <a href="<?php echo $this->serverUrl() . $this->url('home/default',array('action' => 'add' , 'id' => $item['user_id']))?>" class="fa fa-pencil action tooltips edit" data-placement="top" data-original-title="Sửa thông tin"></a>
+                                                <a  href="<?php echo $this->serverUrl() . $this->url('home/default',array('action' => 'destroy' , 'id' => $item['user_id']))?>" class="fa fa-times-circle tooltips action remove" data-placement="top" data-original-title="Xóa người dùng"></a>     
                                             </td>                                           
                                         </tr>
 
