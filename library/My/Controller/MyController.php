@@ -21,6 +21,7 @@ class MyController extends AbstractActionController {
     private $renderer;
 
     public function onDispatch(MvcEvent $e) {
+        
         $this->serverUrl = $this->request->getUri()->getScheme() . '://' . $this->request->getUri()->getHost();
         $this->renderer = $this->serviceLocator->get('Zend\View\Renderer\PhpRenderer');
         if (empty($this->params)) {

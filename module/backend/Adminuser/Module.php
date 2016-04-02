@@ -36,27 +36,27 @@ class Module {
                         return  new \Adminuser\Model\UserTable($tableGateway);
                 },    
                 "Database\Model\Group" => function($sm){
-                    $tableGateway = $this->getTableGateway($sm, 'groups',new \Adminuser\Model\Entity\Group());
-                    return  new \Adminuser\Model\GroupTable($tableGateway);
+                        $tableGateway = $this->getTableGateway($sm, 'groups',new \Adminuser\Model\Entity\Group());
+                        return  new \Adminuser\Model\GroupTable($tableGateway);
                 },     
                 "Database\Model\City" => function($sm){
-                    $tableGateway = $this->getTableGateway($sm, 'cities',new \Adminuser\Model\Entity\City());
-                    return  new \Adminuser\Model\CityTable($tableGateway);
+                        $tableGateway = $this->getTableGateway($sm, 'cities',new \Adminuser\Model\Entity\City());
+                        return  new \Adminuser\Model\CityTable($tableGateway);
                 },
                 "Database\Model\District" => function($sm){
-                    $tableGateway = $this->getTableGateway($sm, 'districts',new \Adminuser\Model\Entity\District());
-                    return  new \Adminuser\Model\DistrictTable($tableGateway);
+                        $tableGateway = $this->getTableGateway($sm, 'districts',new \Adminuser\Model\Entity\District());
+                        return  new \Adminuser\Model\DistrictTable($tableGateway);
                 },
                 "Database\Model\Ward" => function($sm){
-                    $tableGateway = $this->getTableGateway($sm, 'wards',new \Adminuser\Model\Entity\Ward());
-                    return  new \Adminuser\Model\WardTable($tableGateway);
+                        $tableGateway = $this->getTableGateway($sm, 'wards',new \Adminuser\Model\Entity\Ward());
+                        return  new \Adminuser\Model\WardTable($tableGateway);
                 }
             ),
             "aliases" => array(
-                "UserTable"     => "Database\Model\User",
-                "GroupTable"    => "Database\Model\Group",
-                "CityTable"     => "Database\Model\City",
-                "DistrictTable" => "Database\Model\District",
+                "UserTable"       => "Database\Model\User",
+                "GroupTable"     => "Database\Model\Group",
+                "CityTable"        => "Database\Model\City",
+                "DistrictTable"   => "Database\Model\District",
                 "WardTable"     => "Database\Model\Ward",
             )
         );
@@ -68,8 +68,16 @@ class Module {
                 "FormUser" => function($sm){
                     $tableGroup = $sm->getServiceLocator()->get('GroupTable');
             
-                    $form      = new \Adminuser\Form\FormUser($tableGroup);
+                    $form   = new \Adminuser\Form\FormUser($tableGroup);
                     $form->setInputFilter(new \Adminuser\Form\FormUserFilter());
+                    $form->setUseInputFilterDefaults(false);
+                    return $form;
+                },
+                "FormUser2" => function($sm){      
+                    $tableGroup = $sm->getServiceLocator()->get('GroupTable');
+                    
+                    $form   = new \Adminuser\Form\FormUser2($tableGroup);
+                    $form->setInputFilter(new \Adminuser\Form\FormUserFilter2());
                     $form->setUseInputFilterDefaults(false);
                     return $form;
                 },

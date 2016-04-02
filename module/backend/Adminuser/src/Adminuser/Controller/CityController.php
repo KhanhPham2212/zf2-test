@@ -1,10 +1,10 @@
 <?php 
 namespace Adminuser\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use My\Controller\MyController;
 use Zend\View\Model\JsonModel;
 
-class CityController extends AbstractActionController{
+class CityController extends MyController{
 	public function indexAction(){
 	
 		if($this->request->isXmlHttpRequest()){

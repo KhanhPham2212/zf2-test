@@ -1,12 +1,13 @@
 <?php 
 namespace Adminuser\Controller;
 
-use Adminuser\Form\FormUserFilter;
+use Adminuser\Form\FormUser2;
+use Adminuser\Form\FormUserFilter2;
+use My\Controller\MyController;
 use Zend\Form\FormInterface;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController{
+class UserController extends MyController{
 	public function indexAction(){
 		$table    =  $this->getServiceLocator()->get("UserTable");
 	
@@ -19,13 +20,14 @@ class UserController extends AbstractActionController{
                 
         //Abc@123456
 	public function addAction(){
-                        $id   =   $this->params('id');
+                        $id         =   $this->params('id');
                         
                         $table    =  $this->getServiceLocator()->get("UserTable");
 
-                        $user = $table->getUserById($id);
+                        $user     = $table->getUserById($id);
                         
-                        $form = $this->serviceLocator->get("FormElementManager")->get('formUser');
+                        
+                        $form     = $this->serviceLocator->get("FormElementManager")->get('formUser');
                         
                         if(empty($user)){
                                 $options = [  'task' => 'add' ];
@@ -34,9 +36,27 @@ class UserController extends AbstractActionController{
                         }else{
                                 $options = [ 'task' => 'edit' ];
                                 $message = 'User đã được sửa thành công !';
-                                $form->setInputFilter(new FormUserFilter(array("id"=>$id )));
-                                $form->setUseInputFilterDefaults(false);
-                                $form->bind($user);
+                                
+                                $nameInput = array();
+                                                 
+                                foreach($form->getElements() as $key => $val){
+                                        $nameInput[$key] = $key;
+                                }
+                                
+                                $result = array_diff_key($nameInput,$user->getArrayCopy());
+                           
+                                if(count($result) > 1){
+                                   
+                                        $tableGroup = $this->getServiceLocator()->get('GroupTable');
+                    
+                                        $form   =  new FormUser2($tableGroup,$user->getArrayCopy()); 
+                                        $form->setInputFilter(new FormUserFilter2(array("id"=>$id )));
+                                        $form->setUseInputFilterDefaults(false);
+                                        
+                                }else{
+                                        $form->bind($user);
+                                }
+                                
                                 
                         }
                         
@@ -59,8 +79,8 @@ class UserController extends AbstractActionController{
 
                                 if($form->isValid()){
 
-                                        $data       =   $form->getData(\Zend\Form\FormInterface::VALUES_AS_ARRAY);
-     
+                                        $data       =   $form->getData(FormInterface::VALUES_AS_ARRAY);
+                                        
                                         $tableUser =   $this->getServiceLocator()->get("UserTable");
 
                                         $tableUser->save($data,$options);
@@ -71,11 +91,17 @@ class UserController extends AbstractActionController{
                                 }
                         }
 
-                        return new ViewModel([
+                        $viewModel =  new ViewModel();
+                        
+                        $viewModel->setVariables([
                                 'form' => $form,
                                 'action' => $options['task'],
                                 'user'  => $user
                         ]);
+                        
+//                        $viewModel->setTemplate("adminuser/user/add2.phtml");
+                        
+                        return $viewModel;
 	}
         
                 public function destroyAction(){

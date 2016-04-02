@@ -38,7 +38,9 @@ class UserTable extends AbstractTableGateway{
                         if($option['task'] == 'edit'){
                            
                                 $insertData = $this->setData($data,$option);
-                    
+//                                echo "<pre>";
+//                                print_r($insertData);
+//                                echo "</pre>";exit();
                                 $where = [
                                         'user_id' => $data['user_id']
                                 ];
@@ -97,7 +99,8 @@ class UserTable extends AbstractTableGateway{
                 
                 public function getUserById($id,$options = null){
 		return 	$this->_tableGateway->select(function(select $select) use($id){
-                                                                        $select->where(array("user_id"=>$id));
+                                                                        $select->columns(array('fullname','gender','user_id','birthdate','email','phone','address','city_id','district_id','ward_id','user_role'))
+                                                                                    ->where(array("user_id"=>$id));
 			})->current();
 	}
         

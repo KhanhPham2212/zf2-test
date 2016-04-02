@@ -11,11 +11,10 @@ class User
 	public $gender;
 	public $email;
 	public $phone;
-	public $address;
-	public $full_address;
-                public $password;
-                public $repassword;
+	public $address;	
                 public $user_role;
+//                public $password;
+                public $repassword;
 
 
 	public function exchangeArray($data){
@@ -24,12 +23,11 @@ class User
 		$this->fullname     = (!empty($data['fullname']))   	? $data['fullname']    	:"";
 		$this->birthdate    = (!empty($data['birthdate']))   	? $data['birthdate']  	:"";
 		$this->gender       = (!empty($data['gender']))   	    ? $data['gender']      	:"";
-		$this->email        = (!empty($data['email']))   	    ? $data['email']      	:"";
+		$this->email          = (!empty($data['email']))   	    ? $data['email']      	:"";
 		$this->address      = (!empty($data['address']))   	    ? $data['address']      :"";
-		$this->full_address = (!empty($data['full_address']))   ? $data['full_address'] :"";
-                                $this->password = (!empty($data['password']))   ? $data['password'] :"";
-                                $this->repassword = (!empty($data['repassword']))   ? $data['repassword'] :"";
-                                $this->user_role = (!empty($data['user_role']))   ? $data['user_role'] :"";
+                                $this->user_role    = (!empty($data['user_role']))   ? $data['user_role'] :"";
+                                $this->password    = "";
+                                $this->repassword ="";
       
 	}	
 	public function getArrayCopy(){
@@ -37,6 +35,7 @@ class User
                                 
                                 $arr['birthdate'] = date("d/m/Y", $this->birthdate);
                                 $arr['role_list']   = explode(',',$this->user_role);
+                              
 		return $arr;
 	}
 
